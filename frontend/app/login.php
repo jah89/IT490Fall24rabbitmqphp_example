@@ -16,6 +16,7 @@
         <![endif]-->
         <h1 class="text-3xl font-bold underline">hello there sports fans, how is your day today?</h1>
         <script src="" async defer></script>
-        <a href="./login.php"> Login Here</a>
+        <h2 class="text-xl font-bold">Don't have an account?</h2>
+        <a href="/account/register.php"> Sign Up</a>
     </body>
 </html>
