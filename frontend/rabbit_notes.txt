@@ -1,0 +1,3 @@
+Client sends on one queue.  
+Server consumes from this queue.  
+It does work then sends response on a different queue.
