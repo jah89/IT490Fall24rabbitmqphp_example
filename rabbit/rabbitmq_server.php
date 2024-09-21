@@ -5,7 +5,7 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 try {
     // Connect to broker(me/jason)
-    $connection = new AMQPStreamConnection('172.30.103.53', 5672, 'test', 'test');
+    $connection = new AMQPStreamConnection('172.30.103.53', 5672, 'test', 'test', 'testHost');
     $channel = $connection->channel();
 
     // frontend consumer queue
