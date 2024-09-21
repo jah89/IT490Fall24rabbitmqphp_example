@@ -1,5 +1,6 @@
 <?php
-require '/vendor/autoload.php'; 
+require __DIR__ . '/vendor/autoload.php';
+
 
 try {
     // Connect to broker(me/jason)
