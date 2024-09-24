@@ -8,7 +8,7 @@ try {
     $connection = new AMQPStreamConnection('172.30.103.53', 5672, 'test', 'test', 'testHost');
     $channel = $connection->channel();
 
-    
+
     // frontend consumer queue
     $channel->queue_declare('front_consumer_queue', false, true, false, false);
     echo " [*] Frontend consumer queue declared successfully.\n";
@@ -39,7 +39,7 @@ try {
     echo " [x] Sent 'Login Request' to the frontend consumer queue\n";
 
 
-    $dataToSend = 'real_data';  // data to be processed
+    $dataToSend = 'insert data when we get to tht point';  // data to be processed
     // Message the backend consumer queue
     $backMsgBody = json_encode(['action' => 'process', 'data' => $dataToSend]);
     $backMsg = new AMQPMessage($backMsgBody);
@@ -72,8 +72,8 @@ try {
         }
         $msg->ack(); // ack the message 
     };
-    $channel->basic_consume('front_consumer_queue', '', false, true, false, false, $callback);
-    $channel->basic_consume('back_consumer_queue', '', false, true, false, false, $callback);
+    $channel->basic_consume('front_consumer_queue', '', false, false, false, false, $callback);
+    $channel->basic_consume('back_consumer_queue', '', false, false, false, false, $callback);
 
     // wait for incoming messages 
     echo " [*] Waiting for messages\n";
