@@ -32,7 +32,7 @@ try {
     //check if an email and password is sent thru a form
     $email = $_POST['email'];
     $password = $_POST['password']; 
-    // message the frontend consumer queue
+    // Prepare the message to be sent to the frontend consumer queue
     $frontMsgBody = json_encode(['action' => 'login', 'emailAddr' => $email, 'password' => $password]);
     $frontMsg = new AMQPMessage($frontMsgBody);
     $channel->basic_publish($frontMsg, '', 'front_consumer_queue');
