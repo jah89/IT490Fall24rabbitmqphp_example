@@ -59,7 +59,7 @@ try {
     echo " [x] Sent 'Back Produce Request' to the backend producer queue\n";
 
     //continously listen for incoming messages
-    $callback = function ($msg) {
+    $callback = function ($msg) use ($channel) {  // 'use' keyword to bring $channel into the callback 
         $data = json_decode($msg->body, true);
         if ($data['action'] == 'login') {
             echo "Processing login for email: " . $data['emailAddr'] . "\n";
@@ -70,14 +70,16 @@ try {
         } elseif ($data['action'] == 'back_produce') {
             echo "Processing backend producer data: " . $data['data'] . "\n";
         }
-        //echo msg if response is successful to frontend
+        
+        // Send a response back to the frontend
         $response = json_encode(['status' => 'success', 'message' => 'Processed Correctly']);
         $responseMsg = new AMQPMessage($response);
         $channel->basic_publish($responseMsg, '', 'frontend_producer_queue');
         echo " [x] Sent response back to frontend\n";
-
-        $msg->ack(); // ack the message 
+    
+        $msg->ack(); // Acknowledge the message
     };
+    
     $channel->basic_consume('front_consumer_queue', '', false, false, false, false, $callback);
     $channel->basic_consume('back_consumer_queue', '', false, false, false, false, $callback);
 
