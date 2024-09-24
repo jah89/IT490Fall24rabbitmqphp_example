@@ -1,5 +1,5 @@
 <?php
-require_once('rabbitTESTLib.inc'); // RabbitMQ client class
+require_once('rabbitMQLib.inc'); // RabbitMQ client class
 
 try {
     $rabbitMQ = new rabbitMQClient();  

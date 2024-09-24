@@ -1,0 +1,24 @@
+<!-- Snippet of example:  how to fetch JSON data and render in HTML -->
+
+<div id="responseDisplay">Waiting for response...</div>
+
+<script>
+function fetchResponse() {
+  fetch('fetch_from_queue.php')
+    .then(response => response.json())
+    .then(data => {
+      // If the response is successful, render the data
+      if (data.status === 'success') {
+        document.getElementById('responseDisplay').innerHTML = `<p>Response: ${data.data}</p>`;
+      } else {
+        console.log('No messages in queue or error:', data.message);
+      }
+    })
+    .catch((error) => {
+      console.error('Error fetching response:', error);
+    });
+}
+
+// Poll the server every 5 seconds to check for new messages
+setInterval(fetchResponse, 5000);
+</script>

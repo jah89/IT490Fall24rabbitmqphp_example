@@ -1,5 +1,5 @@
 <?php
-require(__DIR__."/../lib/nav.php");
+//require(__DIR__."/../lib/nav.php");
 ?>
 <!DOCTYPE html>
 <html>

@@ -1,14 +1,14 @@
 <?php
 
 
-require_once('rabbitTESTLib.inc');
+require_once('rabbitMQLib.inc');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $inputData = $_POST['inputData'] ?? '';
 
     if (!empty($inputData)) {
         try {
-            $rabbitMQ = new rabbitMQClient(); 
+            $rabbitMQ = new rabbitMQClient("testRabbitMQ.ini", "testServer"); 
             $rabbitMQ->publish(['data' => $inputData]); 
 
             echo json_encode(['status' => 'success', 'message' => 'Message sent to queue']);

@@ -1,0 +1,38 @@
+<!-- Snippet of example:  how to send html doc data to rabbit as json -->
+
+<form id="dataForm">
+    <label for="inputData">Enter Data:</label>
+    <input type="text" id="inputData" name="inputData" required>
+    <button type="submit">Submit</button>
+  </form>
+  
+  <div id="statusMessage"></div>
+  
+  <script>
+  document.getElementById('dataForm').addEventListener('submit', function(event) {
+    event.preventDefault();  // Prevent form from submitting the traditional way
+    let inputData = document.getElementById('inputData').value;
+  
+    fetch('send_to_queue.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: 'inputData=' + encodeURIComponent(inputData),
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Render a success or error message to the user
+      if (data.status === 'success') {
+        document.getElementById('statusMessage').innerText = 'Data sent to queue successfully';
+      } else {
+        document.getElementById('statusMessage').innerText = 'Error: ' + data.message;
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      document.getElementById('statusMessage').innerText = 'An error occurred while sending the data';
+    });
+  });
+  </script>
+  

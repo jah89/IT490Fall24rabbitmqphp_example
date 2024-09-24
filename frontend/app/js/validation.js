@@ -15,23 +15,6 @@ function validateEmail(form) {
     return isValid;
 }
 
-// Validate username
-function validateUsername(form) {
-    let username = form.username.value;
-    let isValid = true;
-    const regUsername = new RegExp(/^[a-z0-9_-]{3,16}$/);
-    let validUsername = username.match(re);
-    if (validUsername == null) {
-        flash("Invalid username.  Please try again.");
-        isValid = false;
-    }
-    if (username.trim() === "") {
-        flash("Username is required.", "danger");
-        isValid = false;
-    }
-    return isValid;
-}
-
 // Validate password
 function validatePassword(form) {
     let pw = form.password.value;
@@ -52,6 +35,10 @@ function validateForm(form) {
     console.log("Validating form...");
 
     validateEmail(form);
-    validateUsername(form);
     validatePassword(form);
+
+    if (!validateEmail(form) || !validatePassword(form)) {
+        return false; 
+    }
+    return true; 
 }
