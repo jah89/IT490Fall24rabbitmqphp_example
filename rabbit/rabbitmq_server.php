@@ -8,38 +8,36 @@ try {
     $connection = new AMQPStreamConnection('172.30.103.53', 5672, 'test', 'test', 'testHost');
     $channel = $connection->channel();
 
-
     // frontend consumer queue
     $channel->queue_declare('front_consumer_queue', false, true, false, false);
     echo " [*] Frontend consumer queue declared successfully.\n";
-
 
     // backend consumer queue
     $channel->queue_declare('back_consumer_queue', false, true, false, false);
     echo " [*] Backend consumer queue declared successfully.\n";
 
-
     // frontend producer queue
     $channel->queue_declare('frontend_producer_queue', false, true, false, false);
     echo " [*] Frontend producer queue declared successfully.\n";
-
 
     // backend producer queue 
     $channel->queue_declare('back_producer_queue', false, true, false, false);
     echo " [*] Backend producer queue declared successfully.\n";
 
+    // Declare testQueue
+    $channel->queue_declare('testQueue', false, true, false, false);
+    echo " [*] testQueue declared successfully.\n";
 
-    //check if an email and password is sent thru a form
+    // check if an email and password is sent through a form
     $email = $_POST['email'];
-    $password = $_POST['password']; 
+    $password = $_POST['password'];
     // Prepare the message to be sent to the frontend consumer queue
     $frontMsgBody = json_encode(['action' => 'login', 'emailAddr' => $email, 'password' => $password]);
     $frontMsg = new AMQPMessage($frontMsgBody);
     $channel->basic_publish($frontMsg, '', 'front_consumer_queue');
     echo " [x] Sent 'Login Request' to the frontend consumer queue\n";
 
-
-    $dataToSend = 'insert data when we get to tht point';  // data to be processed
+    $dataToSend = 'insert data when we get to that point';  // data to be processed
     // Message the backend consumer queue
     $backMsgBody = json_encode(['action' => 'process', 'data' => $dataToSend]);
     $backMsg = new AMQPMessage($backMsgBody);
@@ -58,7 +56,7 @@ try {
     $channel->basic_publish($backProducerMsg, '', 'back_producer_queue');
     echo " [x] Sent 'Back Produce Request' to the backend producer queue\n";
 
-    //continously listen for incoming messages
+    //Listen for incoming messages on testQueue
     $callback = function ($msg) use ($channel) {  // 'use' keyword to bring $channel into the callback 
         $data = json_decode($msg->body, true);
         if ($data['action'] == 'login') {
@@ -70,18 +68,19 @@ try {
         } elseif ($data['action'] == 'back_produce') {
             echo "Processing backend producer data: " . $data['data'] . "\n";
         }
-        
+
         // Send a response back to the frontend
         $response = json_encode(['status' => 'success', 'message' => 'Processed Correctly']);
         $responseMsg = new AMQPMessage($response);
         $channel->basic_publish($responseMsg, '', 'frontend_producer_queue');
         echo " [x] Sent response back to frontend\n";
-    
+
         $msg->ack(); // Acknowledge the message
     };
-    
+
     $channel->basic_consume('front_consumer_queue', '', false, false, false, false, $callback);
     $channel->basic_consume('back_consumer_queue', '', false, false, false, false, $callback);
+    $channel->basic_consume('testQueue', '', false, false, false, false, $callback); 
 
     // wait for incoming messages 
     echo " [*] Waiting for messages\n";
