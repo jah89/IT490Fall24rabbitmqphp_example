@@ -24,8 +24,10 @@ try {
     $channel->queue_declare('back_producer_queue', false, true, false, false);
     echo " [*] Backend producer queue declared successfully.\n";
 
+    //check if an email is passed
+    $email = isset($argv[1]) ? $argv[1] : 'example@mail.com';
     // message the frontend consumer queue
-    $frontMsgBody = json_encode(['action' => 'login', 'emailAddr' => 'example@mail.com']);
+    $frontMsgBody = json_encode(['action' => 'login', 'emailAddr' => $email]);
     $frontMsg = new AMQPMessage($frontMsgBody);
     $channel->basic_publish($frontMsg, '', 'front_consumer_queue');
     echo " [x] Sent 'Login Request' to the frontend consumer queue\n";
