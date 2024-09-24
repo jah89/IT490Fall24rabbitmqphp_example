@@ -31,7 +31,7 @@
         </form>
 
         <h2 class="text-xl font-bold">Don't have an account?</h2>
-        <a href="/account/register.php"> Sign Up</a>
+        <a href="./register.php"> Sign Up</a>
     </body>
 </html>
 <?php

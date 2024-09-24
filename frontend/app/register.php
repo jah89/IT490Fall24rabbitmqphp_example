@@ -1,20 +1,20 @@
 <?php
 //require(__DIR__ . "/../lib/nav.php");
 require(__DIR__. "/../lib/safer_echo.php");
-require(__DIR__."/../lib/sanitizers.php");
+require(__DIR__. "/../lib/sanitizers.php");
 //reset_session();
 ?>
 
 <!DOCTYPE html>
 <html>
     <head>
-    <script src="/../js/validation.js"></script> 
+    <script src="/app/js/validation.js"></script> 
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title> NBA Fantasy Lookup Tool</title>
         <meta name="description" content="A tool to research NBA Players' Stats">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="./css/output.css">
+        <link rel="stylesheet" href="/app/css/output.css">
     </head>
 <body>
     <form id="registerForm" method="POST">
@@ -37,7 +37,7 @@ require(__DIR__."/../lib/sanitizers.php");
 </body>
 
 <?php
-if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirmPassword"])) {
+/*if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirmPassword"])) {
     $email = se($_POST, "email", "", false);
     $password = se($_POST, "password", "", false);
     $confirm = se($_POST,"confirmPassword", "", false);
@@ -45,7 +45,7 @@ if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm
     $hasError = false;
     
     if (empty($email)) {
-        flash("Email must not be empty", "danger");
+        //flash("Email must not be empty", "danger");
         $hasError = true;
     }
     
@@ -53,36 +53,34 @@ if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm
     $email = sanitize_email($email);
     //validate
     if (!is_valid_email($email)) {
-        flash("Invalid email address", "danger");
-        $hasError = true;
-    }
-    if (!is_valid_username($username)) {
-        flash("Username must only contain 3-30 characters a-z, 0-9, _, or -", "danger");
+        //flash("Invalid email address", "danger");
+        echo ("Bad email");
         $hasError = true;
     }
     if (empty($password)) {
-        flash("password must not be empty", "danger");
+        //flash("password must not be empty", "danger");
+        echo "Bad password";
         $hasError = true;
     }
-    if (empty($confirm)) {
-        flash("Confirm password must not be empty", "danger");
+    if (empty($confirmPassword)) {
+        //flash("Confirm password must not be empty", "danger");
+        echo ("Bad confirm");
         $hasError = true;
     }
     if (!is_valid_password($password)) {
-        flash("Password too short", "danger");
+        //flash("Password too short", "danger");
+        echo ("invalid pass");
         $hasError = true;
     }
-    if (
-        strlen($password) > 0 && $password !== $confirm
-    ) {
-        flash("Passwords must match", "danger");
+    if ((strlen($password) > 0) && ($password !== $confirmPassword)) {
+        //flash("Passwords must match", "danger");
         $hasError = true;
     }
     if (!$hasError) {
-        $hash = password_hash($password, PASSWORD_BCRYPT);
-    }
+        echo("Good Input");
+    } 
 }
-    ?>
+    */?>
 
 
 
@@ -102,6 +100,7 @@ document.querySelector('form').addEventListener('submit', function(event) {
   const formData = new URLSearchParams();
   formData.append('email', email);
   formData.append('password', password);
+  console.log(formData);
 
   fetch('../rabbit/send_to_queue.php', {
     method: 'POST',
@@ -110,16 +109,20 @@ document.querySelector('form').addEventListener('submit', function(event) {
     },
     body: formData
   })
-  .then(response => response.json())
-  .then(data => {
-    // Handle the success or error response from the PHP server
-    const statusMessage = document.getElementById('statusMessage');
-    if (data.status === 'success') {
-      statusMessage.innerText = 'Data sent to queue successfully';
-    } else {
-      statusMessage.innerText = 'Error: ' + data.message;
-    }
-  })
+  
+  .then(response => {
+
+  return response.json();
+})
+.then(data => {
+  console.log('Parsed data:', data);
+  const statusMessage = document.getElementById('statusMessage');
+  if (data.status === 'success') {
+    statusMessage.innerText = 'Data sent to queue successfully';
+  } else {
+    statusMessage.innerText = 'Error: ' + data.message;
+  }
+})
   .catch((error) => {
     console.error('Error:', error);
     document.getElementById('statusMessage').innerText = 'An error occurred while sending the data';
@@ -128,17 +131,6 @@ document.querySelector('form').addEventListener('submit', function(event) {
 
 </script>
 </html>
-        
-        <!-- Backend/DB logic
-        $db = getDB();
-        $stmt = $db->prepare("INSERT INTO Users (email, password, username) VALUES(:email, :password, :username)");
-        try {
-            $stmt->execute([":email" => $email, ":password" => $hash, ":username" => $username]);
-            flash("Successfully registered!", "success");
-        } catch (Exception $e) {
-            flash("There was an error with registration, please try again.", "danger");
-            users_check_duplicate($e->errorInfo);
-        } -->
 <?php
 //require(__DIR__ . "/../../partials/flash.php");
 ?>
