@@ -32,9 +32,9 @@ try {
     //check if an email and password is sent thru a form
     $email = $_POST['email'];
     $password = $_POST['password']; 
-    // message the frontend consumer queue
+    // Prepare the message to be sent to the frontend consumer queue
     $frontMsgBody = json_encode(['action' => 'login', 'emailAddr' => $email, 'password' => $password]);
-    $frontMsg = new AMQPMessage($frontMsgBody);
+    $frontMsg = new AMQPMessage($frontMsgBody, ['delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT]);
     $channel->basic_publish($frontMsg, '', 'front_consumer_queue');
     echo " [x] Sent 'Login Request' to the frontend consumer queue\n";
 
@@ -42,19 +42,19 @@ try {
     $dataToSend = 'insert data when we get to tht point';  // data to be processed
     // Message the backend consumer queue
     $backMsgBody = json_encode(['action' => 'process', 'data' => $dataToSend]);
-    $backMsg = new AMQPMessage($backMsgBody);
+    $backMsg = new AMQPMessage($backMsgBody, ['delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT]);
     $channel->basic_publish($backMsg, '', 'back_consumer_queue');
     echo " [x] Sent 'Process Request' to the backend consumer queue\n";
 
     // Message the frontend producer queue
     $producerMsgBody = json_encode(['action' => 'produce', 'data' => 'producer_data']);
-    $producerMsg = new AMQPMessage($producerMsgBody);
+    $producerMsg = new AMQPMessage($producerMsgBody, ['delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT]);
     $channel->basic_publish($producerMsg, '', 'frontend_producer_queue');
     echo " [x] Sent 'Produce Request' to the frontend producer queue\n";
 
     // Message the backend producer queue 
     $backProducerMsgBody = json_encode(['action' => 'back_produce', 'data' => 'back_producer_data']);
-    $backProducerMsg = new AMQPMessage($backProducerMsgBody);
+    $backProducerMsg = new AMQPMessage($backProducerMsgBody, ['delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT]);
     $channel->basic_publish($backProducerMsg, '', 'back_producer_queue');
     echo " [x] Sent 'Back Produce Request' to the backend producer queue\n";
 
@@ -70,6 +70,7 @@ try {
         } elseif ($data['action'] == 'back_produce') {
             echo "Processing backend producer data: " . $data['data'] . "\n";
         }
+        //echo msg if response is successful to frontend
         $response = json_encode(['status' => 'success', 'message' => 'Processed Correctly']);
         $responseMsg = new AMQPMessage($response);
         $channel->basic_publish($responseMsg, '', 'frontend_producer_queue');
