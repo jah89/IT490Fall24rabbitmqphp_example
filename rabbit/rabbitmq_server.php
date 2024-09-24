@@ -70,6 +70,11 @@ try {
         } elseif ($data['action'] == 'back_produce') {
             echo "Processing backend producer data: " . $data['data'] . "\n";
         }
+        $response = json_encode(['status' => 'success', 'message' => 'Processed Correctly']);
+        $responseMsg = new AMQPMessage($response);
+        $channel->basic_publish($responseMsg, '', 'frontend_producer_queue');
+        echo " [x] Sent response back to frontend\n";
+
         $msg->ack(); // ack the message 
     };
     $channel->basic_consume('front_consumer_queue', '', false, false, false, false, $callback);
