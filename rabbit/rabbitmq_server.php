@@ -48,6 +48,27 @@ try {
     $channel->basic_publish($backProducerMsg, '', 'back_producer_queue');
     echo " [x] Sent 'Back Produce Request' to the backend producer queue\n";
 
+    $callback = function ($msg) {
+        $data = json_decode($msg->body, true);
+        if ($data['action'] == 'login') {
+            echo "Processing login for email: " . $data['emailAddr'] . "\n";
+        } elseif ($data['action'] == 'process') {
+            echo "Processing data: " . $data['data'] . "\n";
+        } elseif ($data['action'] == 'produce') {
+            echo "Producing data: " . $data['data'] . "\n";
+        } elseif ($data['action'] == 'back_produce') {
+            echo "Processing backend producer data: " . $data['data'] . "\n";
+        }
+        $msg->ack(); // ack the message after processing
+    };
+    $channel->basic_consume('front_consumer_queue', '', false, true, false, false, $callback);
+    $channel->basic_consume('back_consumer_queue', '', false, true, false, false, $callback);
+
+    // wait for incoming messages 
+    echo " [*] Waiting for messages\n";
+    while ($channel->is_consuming()) {
+        $channel->wait();
+    }
     $channel->close();
     $connection->close();
     echo " [*] Connection closed successfully.\n";
