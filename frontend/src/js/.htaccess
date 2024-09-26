@@ -1,0 +1,5 @@
+# Return 404 for all attempts to access files directly
+# RewriteEngine On
+# RewriteRule ^.*$ - [R=404,L]
+
+Options -Indexes
