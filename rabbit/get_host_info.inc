@@ -1,6 +1,6 @@
 <?php
 function getHostInfo($extra = null) {
-    $machine = parse_ini_file("rabbitMQ.ini", true);
+    $machine = parse_ini_file("testRabbitMQ.ini", true);
 
     // Check if $machine is an array
     if (!is_array($machine)) {
