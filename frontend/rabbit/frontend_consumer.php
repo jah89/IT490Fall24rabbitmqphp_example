@@ -1,6 +1,6 @@
 <!--consumer/listener script-->
 <?php
-require '/vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 $connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');

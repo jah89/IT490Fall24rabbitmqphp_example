@@ -1,9 +1,12 @@
 <?php
 
+//namespace NBA\Frontend\Landing\Includes;
+
 /**
  * Loads landing page
  */
- include 'includes/Landing.inc';
+include __DIR__."/includes/landing.inc.php";
 
- echo displayLanding();
- ?>
+Landing::displayLanding();
+?>
+ 

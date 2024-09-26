@@ -3,7 +3,7 @@
 require(__DIR__. "/../../lib/safer_echo.php");
 require(__DIR__. "/../../lib/sanitizers.php");
 
-$directory = '../rabbit'; // Path to your directory
+$directory = __DIR__.'/../../rabbit'; // Path to your directory
 
 // Get all PHP files from the directory
 $files = scandir($directory);
@@ -45,7 +45,7 @@ foreach ($files as $file) {
         <div id="statusMessage"></div>
 
         <h2 class="text-xl font-bold">Don't have an account?</h2>
-        <a href="../register/register.php"> Sign Up</a>
+        <a href="../register/"> Sign Up</a>
     </body>
 </html>
 <?php

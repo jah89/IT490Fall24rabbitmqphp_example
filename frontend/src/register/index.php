@@ -3,7 +3,7 @@
 require(__DIR__. "/../../lib/safer_echo.php");
 require(__DIR__. "/../../lib/sanitizers.php");
 
-$directory = '../rabbit'; // Path to your directory
+$directory = __DIR__.'/../../../rabbit'; // Path to your directory
 
 // Get all PHP files from the directory
 $files = scandir($directory);
