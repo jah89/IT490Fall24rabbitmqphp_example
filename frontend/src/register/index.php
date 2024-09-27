@@ -3,7 +3,7 @@
 require(__DIR__. "/../../lib/safer_echo.php");
 require(__DIR__. "/../../lib/sanitizers.php");
 
-$directory = __DIR__.'/../../../rabbit'; // Path to your directory
+$directory =(__DIR__.'/../../rabbit'); // Path to your directory
 
 // Get all PHP files from the directory
 $files = scandir($directory);
@@ -11,7 +11,7 @@ $files = scandir($directory);
 // Loop through the files
 foreach ($files as $file) {
     // Check if the file is a PHP file
-    if (pathinfo($file, PATHINFO_EXTENSION) === 'php' || pathinfo($file, PATHINFO_EXTENSION) == 'inc') {
+    if ((pathinfo($file, PATHINFO_EXTENSION) === 'php') || (pathinfo($file, PATHINFO_EXTENSION) == 'inc')) {
         require_once "$directory/$file"; // Require the file
     }
 }
@@ -21,7 +21,7 @@ foreach ($files as $file) {
 <!DOCTYPE html>
 <html>
     <head>
-    <script src="/js/validation.js"></script> 
+    <script src="../../js/validation.js"></script> 
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title> NBA Fantasy Lookup Tool</title>
