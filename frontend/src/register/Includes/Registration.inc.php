@@ -17,8 +17,8 @@ abstract class Registration {
     <html lang='en'>
 
         <head>
-            <?php include(__DIR__.'/../../includes/components/Head.inc.php');
-            echo Head::displayHead(); ?> 
+            <?php include(__DIR__.'/../../lib/components/Head.inc.php');
+            echo \NBA\Frontend\Lib\Components\Head::displayHead(); ?> 
         </head>
 
         <body>

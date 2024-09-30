@@ -1,4 +1,4 @@
-<!--consumer/listener script-->
+<!--test consumer/listener script-->
 <?php
 require '/vendor/autoload.php';
 use PhpAmqpLib\Connection\AMQPStreamConnection;

@@ -1,4 +1,4 @@
-<!-- producer/sender script -->
+<!-- test producer/sender script -->
 
 <?php 
 require '/vendor/autoload.php';

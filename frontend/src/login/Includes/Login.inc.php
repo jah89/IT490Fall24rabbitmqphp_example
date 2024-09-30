@@ -1,9 +1,12 @@
 <?php
 //require(__DIR__ . "/../lib/nav.php");
-require(__DIR__."/../../../lib/sanitizers.php");
+require(__DIR__."/../../lib/sanitizers.php");
 include(__DIR__."/../../../rabbit/rabbitMQLib.inc.php");
 
 abstract class Login {
+
+    private static $session;
+
 
     private static function handleLogin() {
         try{
@@ -63,8 +66,8 @@ abstract class Login {
     <html lang='en'>
 
         <head>
-            <?php include(__DIR__.'/../../includes/components/Head.inc.php');
-            echo Head::displayHead(); ?> 
+            <?php include(__DIR__.'/../../lib/components/Head.inc.php');
+            echo \NBA\Frontend\Lib\Components\Head::displayHead(); ?> 
         </head>
 
         <body>

@@ -1,7 +1,6 @@
 <?php
 /**
 * User session object.
-* @package NBA\shared\session
 */
 
 namespace NBA\Shared;
@@ -14,9 +13,9 @@ class Session {
     /**
      * User's username.
      *
-     * @var string $user is User's username.
+     * @var string $username is User's username.
      */
-    private string $user;
+    private string $username;
 
     /**
      * User's session token.

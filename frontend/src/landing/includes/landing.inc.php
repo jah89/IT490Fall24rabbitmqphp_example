@@ -1,6 +1,6 @@
 <?php
 
-// namespace NBA\Frontend\Landing\Includes;
+namespace NBA\Frontend\Landing;
 
 //frontend main landing page
 
@@ -18,8 +18,7 @@ abstract class Landing {
         <html lang="en">
 
         <head>
-           <?php include(__DIR__.'/../../includes/components/Head.inc.php');
-           echo Head::displayHead(); ?> 
+           <?php echo \NBA\Frontend\Lib\Components\Head::displayHead(); ?> 
 </head>
 
         <body>
