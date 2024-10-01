@@ -28,6 +28,23 @@ try {
     $channel->queue_declare('testQueue', false, true, false, false);
     echo " [*] testQueue declared successfully.\n";
 
+    // Connect to the authentication virtual host
+    $authConnection = new AMQPStreamConnection('172.30.103.53', 5672, 'test', 'test', 'Authentication');
+    $authChannel = $authConnection->channel();   //for communication in Authentication vhost
+
+    $authChannel->queue_declare('login_queue', false, true, false, false);
+    echo " [*] login_queue declared successfully in Authentication vhost.\n";
+
+    $authChannel->queue_declare('auth_queue', false, true, false, false);
+    echo " [*] auth_queue declared successfully in Authentication vhost.\n";
+
+    $authChannel->queue_declare('register_queue', false, true, false, false);
+    echo " [*] register_queue declared successfully in Authentication vhost.\n";
+
+    $authChannel->queue_declare('session_queue', false, true, false, false);
+    echo " [*] session_queue declared successfully in Authentication vhost.\n";
+
+ 
     // check if an email and password is sent through a form
     $email = $_POST['email'];
     $password = $_POST['password'];
@@ -81,10 +98,14 @@ try {
     $channel->basic_consume('front_consumer_queue', '', false, false, false, false, $callback);
     $channel->basic_consume('back_consumer_queue', '', false, false, false, false, $callback);
     $channel->basic_consume('testQueue', '', false, false, false, false, $callback); 
+    //consuming messages from Authentication vhost 
+    $authChannel->basic_consume('login_queue', '', false, false, false, false, $authCallback);
+    $authChannel->basic_consume('auth_queue', '', false, false, false, false, $authCallback);
 
     // wait for incoming messages 
     echo " [*] Waiting for messages\n";
-    while ($channel->is_consuming()) {
+    while ($authChannel->is_consuming() || $channel->is_consuming()) {
+        $authChannel->wait();
         $channel->wait();
     }
     $channel->close();
